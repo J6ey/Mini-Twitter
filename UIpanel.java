@@ -38,6 +38,8 @@ public class UIpanel {
 	private Hashtable<String, UserGroup> groups;
 	private VisitorsInterface visitorsCount;
 	private VisitorsInterface goodVisitors;
+	private ValidateUser vu = new ValidateUser();
+	private VisitorUpdate update = new VisitorUpdate();
 	
 	/**
 	 * Create the application.
@@ -136,7 +138,7 @@ public class UIpanel {
 
 				String groupID = txtGroupID.getText();
 				if ( groups.containsKey(groupID)){
-					txtGroupID.setText("Group already exists.");
+					txtGroupID.setText("Duplicate group.");
 					
 				} else {
 					DefaultMutableTreeNode node = getAddingGroup();
@@ -199,7 +201,7 @@ public class UIpanel {
 			}
 		});
 		btnUserTotal.setMargin(new Insets(2, 2, 2, 2));
-		btnUserTotal.setBounds(247, 219, 142, 53);
+		btnUserTotal.setBounds(250, 195, 119, 35);
 		frame.getContentPane().add(btnUserTotal);
 
 		JButton btnGroupTotal = new JButton("Show Group Total");
@@ -211,7 +213,7 @@ public class UIpanel {
 			}
 		});
 		btnGroupTotal.setMargin(new Insets(2, 2, 2, 2));
-		btnGroupTotal.setBounds(415, 219, 142, 53);
+		btnGroupTotal.setBounds(421, 195, 119, 35);
 		frame.getContentPane().add(btnGroupTotal);
 
 		JButton btnMessagesCount = new JButton("Message Count");
@@ -223,7 +225,7 @@ public class UIpanel {
 			}
 		});
 		btnMessagesCount.setMargin(new Insets(2, 2, 2, 2));
-		btnMessagesCount.setBounds(247, 283, 142, 53);
+		btnMessagesCount.setBounds(250, 241, 119, 35);
 		frame.getContentPane().add(btnMessagesCount);
 
 		JButton btnPositivePercent = new JButton("Positive Msg %");
@@ -237,8 +239,40 @@ public class UIpanel {
 			}
 		});
 		btnPositivePercent.setMargin(new Insets(2, 2, 2, 2));
-		btnPositivePercent.setBounds(415, 283, 142, 53);
+		btnPositivePercent.setBounds(421, 241, 119, 35);
 		frame.getContentPane().add(btnPositivePercent);
+		
+		JButton btnValidateUser = new JButton("Validate User");
+		btnValidateUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rootGroup.allowVisitor(vu);
+				String message;
+				if(vu.valid()){
+					message = "All ID's are valid.";
+				} else {
+					message = "Duplicated or invalid ID's are found.";
+				}
+				JOptionPane.showMessageDialog(null, message , "ID Check", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		btnValidateUser.setMargin(new Insets(2, 2, 2, 2));
+		btnValidateUser.setBounds(250, 287, 119, 35);
+		frame.getContentPane().add(btnValidateUser);
+		
+		JButton btnShowTime = new JButton("Show Time Update");
+		btnShowTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rootGroup.allowVisitor(update);
+				Users u = update.getNewTime();
+				long latestTime = u.getNewsFeed().getPrevTime();
+				String message = "Latest user update: " + u.toString()
+				+ "\n Latest update time: " + latestTime;
+				JOptionPane.showMessageDialog(null, message , "Latest update", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		btnShowTime.setMargin(new Insets(2, 2, 2, 2));
+		btnShowTime.setBounds(421, 287, 119, 35);
+		frame.getContentPane().add(btnShowTime);
 	}
 
 	private void setHintText( JTextField txt, String msg){

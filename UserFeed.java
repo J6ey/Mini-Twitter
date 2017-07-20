@@ -5,6 +5,7 @@ import java.util.List;
 public class UserFeed{
 	private List<Post> feeds;
 	private List<NewsFeed> observers;
+	private long updateTime;
 	
 	public UserFeed(){
 		feeds= new ArrayList<Post>();
@@ -22,16 +23,21 @@ public class UserFeed{
 		}
 	}
 
-	public void attachNewsFeedObserver( NewsFeed obs ){
+	public void attachNewsFeedObserver(NewsFeed obs){
 		observers.add(obs);
 	}
 	
-	public void detachNewsFeedObserver( NewsFeed obs ){
+	public void detachNewsFeedObserver(NewsFeed obs){
 		observers.remove(obs);
 	}
 	
 	public List<Post> getPosts(){
 		return feeds;
 	}
+	
+	public long getPrevTime(){
+		return updateTime;
+	}
+	
 
 }
